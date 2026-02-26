@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -92,7 +93,7 @@ export default function Dashboard() {
                       src={SINGLE_COURSE.image} 
                       alt={SINGLE_COURSE.title} 
                       fill 
-                      className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+                      className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
                       priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#121214] via-transparent to-transparent hidden lg:block" />
@@ -152,18 +153,18 @@ export default function Dashboard() {
                         src={module.image} 
                         alt={module.title}
                         fill
-                        className="object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover opacity-100 group-hover:scale-110 transition-transform duration-700"
                         unoptimized
                        />
-                       <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0E] via-[#0C0C0E]/40 to-transparent" />
-                       <div className="absolute top-4 left-4 h-10 w-10 md:h-12 md:w-12 rounded-xl bg-primary/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
+                       <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0E] via-transparent to-transparent opacity-40" />
+                       <div className="absolute top-4 left-4 h-10 w-10 md:h-12 md:w-12 rounded-xl bg-primary backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg">
                           <span className="text-base md:text-xl font-black text-white font-headline">0{mIdx + 1}</span>
                        </div>
                     </div>
 
                     <div className="p-6 md:p-8 space-y-4 md:space-y-6 flex-1">
                       <div className="space-y-2">
-                        <h4 className="text-lg md:text-xl font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors font-headline">
+                        <h4 className="text-lg md:text-xl font-black text-primary uppercase tracking-tight font-headline">
                           {module.title}
                         </h4>
                         <p className="text-xs md:text-sm text-muted-foreground font-medium leading-relaxed line-clamp-2">
