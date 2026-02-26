@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, PlayCircle, CheckCircle2, ListChecks } from 'lucide-react';
+import { ChevronLeft, PlayCircle, CheckCircle2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const COURSE_DATA = {
@@ -22,11 +22,14 @@ const COURSE_DATA = {
   ]
 };
 
-export default function LessonPage({ params }: { params: { id: string, lessonId: string } }) {
+export default function LessonPage({ params }: { params: Promise<{ id: string, lessonId: string }> }) {
+  const resolvedParams = React.use(params);
+  const { lessonId } = resolvedParams;
+
   // Encontrar a aula atual
   const allLessons = COURSE_DATA.modules.flatMap(m => m.lessons);
-  const currentLesson = allLessons.find(l => l.id === params.lessonId) || allLessons[0];
-  const currentModule = COURSE_DATA.modules.find(m => m.lessons.some(l => l.id === params.lessonId)) || COURSE_DATA.modules[0];
+  const currentLesson = allLessons.find(l => l.id === lessonId) || allLessons[0];
+  const currentModule = COURSE_DATA.modules.find(m => m.lessons.some(l => l.id === lessonId)) || COURSE_DATA.modules[0];
 
   return (
     <SidebarProvider defaultOpen={false}>
@@ -49,14 +52,20 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
           <div className="flex flex-col lg:flex-row h-full">
             {/* Player Section */}
             <div className="flex-1 p-4 md:p-12 space-y-8">
-              <div className="aspect-video w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl relative">
+              <div className="aspect-video w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl relative group">
                 {currentLesson.videoId ? (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${currentLesson.videoId}`}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${currentLesson.videoId}?modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&color=white`}
+                      className="w-full h-full pointer-events-auto"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                    {/* Top Mask to hide YouTube title/share */}
+                    <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {/* Corner Mask for Logo */}
+                    <div className="absolute bottom-12 right-0 w-24 h-12 bg-black/40 blur-md pointer-events-none" />
+                  </>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full space-y-4">
                     <PlayCircle className="h-16 w-16 text-primary/40" />
@@ -98,7 +107,7 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
                     </h4>
                     <div className="space-y-2">
                       {module.lessons.map((lesson) => {
-                        const isActive = lesson.id === params.lessonId;
+                        const isActive = lesson.id === lessonId;
                         return (
                           <Link 
                             key={lesson.id} 
