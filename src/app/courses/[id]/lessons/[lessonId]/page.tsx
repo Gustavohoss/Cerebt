@@ -29,7 +29,7 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
   const currentModule = COURSE_DATA.modules.find(m => m.lessons.some(l => l.id === params.lessonId)) || COURSE_DATA.modules[0];
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset className="bg-black">
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-white/5 px-6 bg-black/50 backdrop-blur-md sticky top-0 z-50">
@@ -48,7 +48,7 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
         <main className="flex-1 overflow-auto bg-black">
           <div className="flex flex-col lg:flex-row h-full">
             {/* Player Section */}
-            <div className="flex-1 p-4 md:p-8 space-y-6">
+            <div className="flex-1 p-4 md:p-12 space-y-8">
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl relative">
                 {currentLesson.videoId ? (
                   <iframe
@@ -65,38 +65,38 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
                 )}
               </div>
 
-              <div className="space-y-4">
-                <h1 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter font-headline">
+              <div className="space-y-6">
+                <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter font-headline">
                   {currentLesson.title}
                 </h1>
                 <div className="flex items-center gap-4">
-                  <Badge className="bg-primary/20 text-primary border-primary/30 font-black uppercase text-[10px] px-3 py-1">
+                  <Badge className="bg-primary/20 text-primary border-primary/30 font-black uppercase text-[10px] px-4 py-1.5">
                     Aula {allLessons.indexOf(currentLesson) + 1}
                   </Badge>
-                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-widest">{currentLesson.duration} de duração</span>
+                  <span className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.2em]">{currentLesson.duration} de duração</span>
                 </div>
                 <Separator className="bg-white/5" />
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-w-4xl">
+                <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-4xl font-medium">
                   Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.
                 </p>
               </div>
             </div>
 
             {/* Sidebar Lessons List */}
-            <div className="w-full lg:w-96 border-l border-white/5 bg-[#080808] overflow-auto">
-              <div className="p-6 border-b border-white/5">
-                <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
-                  <ListChecks className="h-4 w-4 text-primary" />
+            <div className="w-full lg:w-96 border-l border-white/5 bg-[#050505] overflow-auto h-full">
+              <div className="p-8 border-b border-white/5">
+                <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-3">
+                  <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                   Conteúdo do Curso
                 </h3>
               </div>
-              <div className="p-4 space-y-8">
+              <div className="p-6 space-y-10">
                 {COURSE_DATA.modules.map((module) => (
-                  <div key={module.id} className="space-y-3">
-                    <h4 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] px-2">
+                  <div key={module.id} className="space-y-4">
+                    <h4 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] px-2 flex items-center gap-2">
                       {module.title}
                     </h4>
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       {module.lessons.map((lesson) => {
                         const isActive = lesson.id === params.lessonId;
                         return (
@@ -104,21 +104,23 @@ export default function LessonPage({ params }: { params: { id: string, lessonId:
                             key={lesson.id} 
                             href={`/courses/${COURSE_DATA.id}/lessons/${lesson.id}`}
                             className={`
-                              flex items-center gap-3 p-3 rounded-xl transition-all group
-                              ${isActive ? 'bg-primary/10 border border-primary/20' : 'hover:bg-white/5 border border-transparent'}
+                              flex items-center gap-4 p-4 rounded-2xl transition-all group border
+                              ${isActive 
+                                ? 'bg-primary/10 border-primary/30 shadow-[0_0_20px_rgba(147,45,204,0.1)]' 
+                                : 'hover:bg-white/5 border-transparent'}
                             `}
                           >
                             <div className={`
-                              h-8 w-8 rounded-lg flex items-center justify-center shrink-0
-                              ${isActive ? 'bg-primary text-white' : 'bg-white/5 text-muted-foreground group-hover:text-white'}
+                              h-10 w-10 rounded-xl flex items-center justify-center shrink-0 transition-colors
+                              ${isActive ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white/5 text-muted-foreground group-hover:text-white'}
                             `}>
-                              {isActive ? <PlayCircle className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+                              {isActive ? <PlayCircle className="h-5 w-5" /> : <CheckCircle2 className="h-5 w-5" />}
                             </div>
                             <div className="flex flex-col min-w-0">
-                              <span className={`text-[11px] font-bold truncate ${isActive ? 'text-primary' : 'text-white/80'}`}>
+                              <span className={`text-xs font-black uppercase tracking-tight truncate ${isActive ? 'text-primary' : 'text-white/80 group-hover:text-white'}`}>
                                 {lesson.title}
                               </span>
-                              <span className="text-[9px] font-medium text-muted-foreground uppercase">{lesson.duration}</span>
+                              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">{lesson.duration}</span>
                             </div>
                           </Link>
                         );
