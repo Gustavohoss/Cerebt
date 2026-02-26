@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,15 +9,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth, useUser, initiateEmailSignUp } from '@/firebase';
+import { useAuth, useUser, useFirestore } from '@/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
 
 export default function RegisterPage() {
   const router = useRouter();
   const auth = useAuth();
+  const db = useFirestore();
+  const { toast } = useToast();
   const { user, isUserLoading } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user && !isUserLoading) {
@@ -24,14 +31,41 @@ export default function RegisterPage() {
     }
   }, [user, isUserLoading, router]);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
+      toast({
+        variant: "destructive",
+        title: "Erro no cadastro",
+        description: "As senhas não coincidem!",
+      });
       return;
     }
-    if (email && password) {
-      initiateEmailSignUp(auth, email, password);
+
+    setIsLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = userCredential.user;
+
+      // Create UserProfile in Firestore
+      await setDoc(doc(db, 'users', newUser.uid), {
+        id: newUser.uid,
+        email: email,
+        firstName: '',
+        lastName: '',
+        registrationDate: new Date().toISOString(),
+        createdAt: serverTimestamp(),
+      });
+
+      router.push('/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao criar conta",
+        description: error.message || "Verifique seus dados e tente novamente.",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,6 +99,7 @@ export default function RegisterPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isLoading}
                   className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11 text-white"
                 />
               </div>
@@ -77,6 +112,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                   className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11 text-white"
                 />
               </div>
@@ -89,13 +125,14 @@ export default function RegisterPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                   className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11 text-white"
                 />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 p-6 md:p-8">
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase text-xs tracking-widest h-12 rounded-xl shadow-[0_5px_15px_rgba(147,45,204,0.3)]">
-                Criar Conta
+              <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase text-xs tracking-widest h-12 rounded-xl shadow-[0_5px_15px_rgba(147,45,204,0.3)]">
+                {isLoading ? "Criando conta..." : "Criar Conta"}
               </Button>
               <p className="text-xs md:text-sm text-center text-muted-foreground">
                 Já tem uma conta? <Link href="/login" className="text-primary hover:underline font-bold">Entrar</Link>

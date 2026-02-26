@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -10,7 +11,8 @@ import {
   Brain,
   Zap,
   BookOpen,
-  Trophy
+  Trophy,
+  LogOut
 } from "lucide-react"
 
 import {
@@ -23,7 +25,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { useAuth } from "@/firebase"
+import { signOut } from "firebase/auth"
+import { Button } from "./ui/button"
 
 const navMain = [
   {
@@ -60,6 +65,13 @@ const navMain = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/login");
+  };
 
   return (
     <Sidebar className="border-r border-white/5 bg-[#0A0A0B]">
@@ -105,7 +117,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter className="p-6">
+      <SidebarFooter className="p-6 space-y-4">
         <div className="rounded-2xl bg-gradient-to-br from-[#1A1025] to-[#0A0A0B] p-5 border border-white/5 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-2 opacity-10">
             <Trophy className="h-12 w-12 text-primary" />
@@ -116,6 +128,15 @@ export function AppSidebar() {
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
+        
+        <Button 
+          variant="ghost" 
+          onClick={handleLogout}
+          className="w-full justify-start text-muted-foreground hover:text-red-400 hover:bg-red-400/10 gap-3 rounded-xl px-4"
+        >
+          <LogOut className="h-5 w-5" />
+          <span className="font-semibold text-[15px]">Sair da Conta</span>
+        </Button>
       </SidebarFooter>
     </Sidebar>
   )
