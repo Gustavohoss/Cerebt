@@ -13,10 +13,10 @@ import { collection } from 'firebase/firestore';
 
 const COURSE_CONTENT = {
   id: '1',
-  title: 'Cerebro: Strategic AI Blueprint',
+  title: 'Cerebro: AI Web Mastery',
   modules: [
     {
-      title: 'Módulo 1: Explicando ferramentas da Clickify',
+      title: 'Ecossistema Clickify: Escala com IA',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
       ]
@@ -52,7 +52,7 @@ export default function CoursePage() {
               <Badge className="bg-primary/20 text-primary border-primary/30 py-1 px-3">CURSO COMPLETO</Badge>
               <h1 className="text-3xl md:text-4xl font-bold text-white font-headline">{COURSE_CONTENT.title}</h1>
               <p className="text-muted-foreground text-lg max-w-3xl leading-relaxed">
-                Neste curso você vai mergulhar nas entranhas da inteligência artificial moderna, entendendo desde a matemática base até a implementação de modelos de ponta.
+                Domine a criação de sites de alta conversão com Inteligência Artificial e construa uma agência lucrativa vendendo para clientes de elite.
               </p>
             </div>
 

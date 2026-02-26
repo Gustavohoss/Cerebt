@@ -14,14 +14,14 @@ import { collection } from 'firebase/firestore';
 
 const SINGLE_COURSE = {
   id: '1',
-  title: 'Cerebro: Strategic AI Blueprint',
-  description: 'O guia definitivo para dominar a inteligência artificial estratégica e transformar processos de negócio de ponta a ponta.',
+  title: 'Cerebro: AI Web Mastery',
+  description: 'Domine a criação de sites de alta conversão com Inteligência Artificial e construa uma agência lucrativa vendendo para clientes de elite.',
   image: PlaceHolderImages.find(img => img.id === 'course-hero')?.imageUrl || 'https://picsum.photos/seed/ai1/1200/600',
   modules: [
     {
       id: 'm1',
-      title: 'Explicando ferramentas da Clickify',
-      description: 'Conheça a fundo todas as ferramentas da Clickify e como utilizá-las para potencializar seus resultados.',
+      title: 'Ecossistema Clickify: Escala com IA',
+      description: 'Aprenda a utilizar o poder da Clickify para criar landing pages que vendem e automatizar a captura de clientes de alto ticket.',
       image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
@@ -34,7 +34,6 @@ export default function Dashboard() {
   const { user } = useUser();
   const db = useFirestore();
 
-  // Buscar todas as conclusões de aula do usuário
   const completionsRef = useMemoFirebase(() => {
     if (!db || !user?.uid) return null;
     return collection(db, 'users', user.uid, 'lessonCompletions');
@@ -42,7 +41,6 @@ export default function Dashboard() {
 
   const { data: completions } = useCollection(completionsRef);
 
-  // Calcular progresso
   const totalLessons = SINGLE_COURSE.modules.flatMap(m => m.lessons).length;
   const completedCount = completions?.length || 0;
   const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;

@@ -12,11 +12,11 @@ import { doc } from 'firebase/firestore';
 
 const COURSE_DATA = {
   id: '1',
-  title: 'Cerebro: Strategic AI Blueprint',
+  title: 'Cerebro: AI Web Mastery',
   modules: [
     {
       id: 'm1',
-      title: 'Explicando ferramentas da Clickify',
+      title: 'Ecossistema Clickify: Escala com IA',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', videoId: 'OLNP1xzmpY8', duration: '08:45' },
       ]
@@ -135,7 +135,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                 
                 <Separator className="bg-white/5" />
                 <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-4xl font-medium">
-                  Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.
+                  Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico para sites criados com IA.
                 </p>
               </div>
             </div>
