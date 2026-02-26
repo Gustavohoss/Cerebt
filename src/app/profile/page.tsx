@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUser, useDoc, useFirestore, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -86,7 +85,8 @@ export default function ProfilePage() {
     ? new Date(profile.registrationDate).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
     : 'Recentemente';
 
-  const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar')?.imageUrl;
+  // Fallback initial based on first name or email
+  const initial = firstName ? firstName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase() || '?';
 
   return (
     <SidebarProvider>
@@ -98,83 +98,83 @@ export default function ProfilePage() {
         <main className="flex-1 overflow-auto p-6 max-w-3xl">
           <div className="space-y-6">
              {/* Header Section */}
-             <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/10">
-                <Avatar className="h-24 w-24 ring-4 ring-primary/20">
-                  <AvatarImage src={userAvatar} alt={user.email || 'User'} />
-                  <AvatarFallback className="bg-primary/20 text-primary text-xl font-bold uppercase">
-                    {user.email?.substring(0, 2)}
+             <div className="flex flex-col sm:flex-row items-center gap-6 p-8 bg-[#0C0C0E] rounded-[2rem] border border-white/5 shadow-2xl">
+                <Avatar className="h-28 w-28 ring-4 ring-primary/10">
+                  <AvatarImage src="" alt={firstName} />
+                  <AvatarFallback className="bg-primary/20 text-primary text-3xl font-black uppercase font-headline">
+                    {initial}
                   </AvatarFallback>
                 </Avatar>
                 <div className="space-y-2 text-center sm:text-left">
-                  <h2 className="text-2xl font-bold text-white">
+                  <h2 className="text-3xl font-black text-white font-headline">
                     {firstName && lastName ? `${firstName} ${lastName}` : user.email}
                   </h2>
-                  <p className="text-muted-foreground text-sm uppercase tracking-widest font-medium">
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-[0.2em] font-bold">
                     Membro desde {registrationDate}
                   </p>
-                  <Button variant="outline" size="sm" className="border-white/10 hover:bg-white/10 mt-2">
+                  <Button variant="outline" size="sm" className="border-white/10 hover:bg-white/5 text-[10px] uppercase tracking-widest font-black mt-2 h-9 px-6 rounded-xl">
                     Alterar Avatar
                   </Button>
                 </div>
              </div>
 
              {/* Personal Info Form */}
-             <Card className="bg-white/5 border-white/10 overflow-hidden">
-               <CardHeader className="border-b border-white/5 bg-white/[0.02]">
-                 <CardTitle className="text-white">Informações Pessoais</CardTitle>
-                 <CardDescription className="text-muted-foreground">Atualize seus dados de contato e preferências.</CardDescription>
+             <Card className="bg-[#0C0C0E] border-white/5 rounded-[2rem] overflow-hidden shadow-2xl">
+               <CardHeader className="p-8 pb-4">
+                 <CardTitle className="text-2xl font-black text-white uppercase tracking-tight font-headline">Informações Pessoais</CardTitle>
+                 <CardDescription className="text-muted-foreground font-medium">Atualize seus dados de contato e preferências.</CardDescription>
                </CardHeader>
-               <CardContent className="space-y-6 p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="first-name" className="text-white/70">Nome</Label>
+               <CardContent className="space-y-8 p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="first-name" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">Nome</Label>
                       <Input 
                         id="first-name" 
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="Seu nome"
-                        className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11" 
+                        placeholder="Gustavo"
+                        className="bg-black/40 border-white/5 focus:border-primary/50 transition-all h-14 rounded-xl px-6 font-medium text-white" 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="last-name" className="text-white/70">Sobrenome</Label>
+                    <div className="space-y-3">
+                      <Label htmlFor="last-name" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">Sobrenome</Label>
                       <Input 
                         id="last-name" 
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Seu sobrenome"
-                        className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11" 
+                        placeholder="Henrique"
+                        className="bg-black/40 border-white/5 focus:border-primary/50 transition-all h-14 rounded-xl px-6 font-medium text-white" 
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white/70">E-mail de Acesso</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="email" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">E-mail de Acesso</Label>
                     <Input 
                       id="email" 
                       value={user.email || ''} 
                       disabled 
-                      className="bg-black/30 border-white/5 text-muted-foreground cursor-not-allowed h-11" 
+                      className="bg-black/20 border-white/5 text-muted-foreground cursor-not-allowed h-14 rounded-xl px-6" 
                     />
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">O e-mail não pode ser alterado diretamente.</p>
+                    <p className="text-[9px] text-muted-foreground uppercase tracking-wider font-bold">O e-mail não pode ser alterado diretamente.</p>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="bio" className="text-white/70">Bio / Objetivo na IA</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="bio" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">Bio / Objetivo na IA</Label>
                     <textarea 
                       id="bio" 
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
-                      className="w-full min-h-[120px] bg-black/50 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-white"
+                      className="w-full min-h-[160px] bg-black/40 border border-white/5 rounded-[1.5rem] p-6 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all text-white font-medium resize-none"
                       placeholder="Conte um pouco sobre sua jornada com Inteligência Artificial..."
                     />
                   </div>
                </CardContent>
-               <CardFooter className="flex justify-end gap-3 bg-white/[0.02] border-t border-white/5 p-6">
-                  <Button variant="ghost" className="text-muted-foreground hover:text-white" onClick={() => router.back()}>
+               <CardFooter className="flex justify-between items-center bg-white/[0.01] border-t border-white/5 p-8">
+                  <Button variant="ghost" className="text-muted-foreground hover:text-white font-bold" onClick={() => router.back()}>
                     Voltar
                   </Button>
                   <Button 
                     onClick={handleSave}
-                    className="bg-primary hover:bg-primary/90 text-white px-8 font-bold uppercase text-[10px] tracking-widest h-12 rounded-xl shadow-[0_5px_15px_rgba(147,45,204,0.3)] transition-all"
+                    className="bg-primary hover:bg-primary/90 text-white px-10 font-black uppercase text-[10px] tracking-widest h-14 rounded-2xl shadow-[0_10px_20px_rgba(147,45,204,0.3)] transition-all"
                   >
                     Salvar Alterações
                   </Button>
