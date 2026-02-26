@@ -7,10 +7,10 @@
       "imageHint": "ai strategic"
     },
     {
-      "id": "module-mindset",
-      "description": "Abstract mindset and logic concept",
-      "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
-      "imageHint": "cyber logic"
+      "id": "module-clickify",
+      "description": "Clickify tools explanation",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504",
+      "imageHint": "clickify tools"
     },
     {
       "id": "module-prompting",

@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -21,7 +20,7 @@ const SINGLE_COURSE = {
     {
       title: 'Explicando ferramentas da Clickify',
       description: 'Conheça a fundo todas as ferramentas da Clickify e como utilizá-las para potencializar seus resultados.',
-      image: PlaceHolderImages.find(img => img.id === 'module-mindset')?.imageUrl || 'https://picsum.photos/seed/m1/800/400',
+      image: PlaceHolderImages.find(img => img.id === 'module-clickify')?.imageUrl || 'https://picsum.photos/seed/m1/800/400',
       lessons: [
         { id: 'l1', title: 'Visão Geral do Painel Clickify', duration: '12:45', completed: true },
         { id: 'l2', title: 'Configurando sua primeira Automação', duration: '15:20', completed: true },
