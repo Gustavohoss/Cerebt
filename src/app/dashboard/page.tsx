@@ -9,13 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 const SINGLE_COURSE = {
   id: '1',
   title: 'Cerebro: Strategic AI Blueprint',
   description: 'O guia definitivo para dominar a inteligência artificial estratégica e transformar processos de negócio de ponta a ponta.',
   image: PlaceHolderImages.find(img => img.id === 'course-hero')?.imageUrl || 'https://picsum.photos/seed/ai1/1200/600',
-  progress: 5,
   modules: [
     {
       id: 'm1',
@@ -23,13 +24,31 @@ const SINGLE_COURSE = {
       description: 'Conheça a fundo todas as ferramentas da Clickify e como utilizá-las para potencializar seus resultados.',
       image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
       lessons: [
-        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45', completed: false },
+        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
       ]
     }
   ]
 };
 
 export default function Dashboard() {
+  const { user } = useUser();
+  const db = useFirestore();
+
+  // Buscar todas as conclusões de aula do usuário
+  const completionsRef = useMemoFirebase(() => {
+    if (!db || !user?.uid) return null;
+    return collection(db, 'users', user.uid, 'lessonCompletions');
+  }, [db, user?.uid]);
+
+  const { data: completions } = useCollection(completionsRef);
+
+  // Calcular progresso
+  const totalLessons = SINGLE_COURSE.modules.flatMap(m => m.lessons).length;
+  const completedCount = completions?.length || 0;
+  const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+  const isLessonCompleted = (id: string) => completions?.some(c => c.lessonId === id);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -52,9 +71,9 @@ export default function Dashboard() {
                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Progresso Total</span>
                <div className="flex items-center gap-3 mt-1">
                  <div className="w-24 md:w-32 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                   <div className="h-full bg-primary" style={{ width: `${SINGLE_COURSE.progress}%` }} />
+                   <div className="h-full bg-primary transition-all duration-700 ease-out" style={{ width: `${progressPercent}%` }} />
                  </div>
-                 <span className="text-xs md:text-sm font-black text-white">{SINGLE_COURSE.progress}%</span>
+                 <span className="text-xs md:text-sm font-black text-white">{progressPercent}%</span>
                </div>
              </div>
              <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
@@ -97,13 +116,13 @@ export default function Dashboard() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-4">
                       <Button asChild size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-black uppercase text-[10px] tracking-widest px-6 md:px-10 h-12 md:h-16 rounded-xl md:rounded-2xl shadow-[0_0_30px_rgba(147,45,204,0.3)] transition-all">
                         <Link href={`/courses/${SINGLE_COURSE.id}/lessons/${SINGLE_COURSE.modules[0].lessons[0].id}`}>
-                          Continuar Assistindo
+                          {progressPercent > 0 ? 'Continuar Assistindo' : 'Começar Agora'}
                         </Link>
                       </Button>
                       <div className="flex items-center justify-around sm:justify-start gap-4 md:gap-6 px-2">
                         <div className="flex flex-col">
                           <span className="text-[8px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Aulas</span>
-                          <span className="text-white font-bold text-xs md:text-base">1 Aula</span>
+                          <span className="text-white font-bold text-xs md:text-base">{totalLessons} Aula</span>
                         </div>
                         <div className="w-px h-6 md:h-8 bg-white/10" />
                         <div className="flex flex-col">
@@ -152,28 +171,33 @@ export default function Dashboard() {
                       </div>
 
                       <div className="space-y-3 pt-2">
-                        {module.lessons.map((lesson) => (
-                          <Link 
-                            key={lesson.id} 
-                            href={`/courses/${SINGLE_COURSE.id}/lessons/${lesson.id}`}
-                            className="flex items-center justify-between group/lesson py-2 border-b border-white/[0.03] last:border-0"
-                          >
-                            <div className="flex items-center gap-3">
-                              {lesson.completed ? (
-                                <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              ) : (
-                                <PlayCircle className="h-4 w-4 text-muted-foreground group-hover/lesson:text-primary transition-colors" />
-                              )}
-                              <span className="text-xs font-bold text-white/80 group-hover/lesson:text-white transition-colors line-clamp-1">{lesson.title}</span>
-                            </div>
-                            <span className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{lesson.duration}</span>
-                          </Link>
-                        ))}
+                        {module.lessons.map((lesson) => {
+                          const completed = isLessonCompleted(lesson.id);
+                          return (
+                            <Link 
+                              key={lesson.id} 
+                              href={`/courses/${SINGLE_COURSE.id}/lessons/${lesson.id}`}
+                              className="flex items-center justify-between group/lesson py-2 border-b border-white/[0.03] last:border-0"
+                            >
+                              <div className="flex items-center gap-3">
+                                {completed ? (
+                                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                ) : (
+                                  <PlayCircle className="h-4 w-4 text-muted-foreground group-hover/lesson:text-primary transition-colors" />
+                                )}
+                                <span className={`text-xs font-bold transition-colors line-clamp-1 ${completed ? 'text-green-500/80' : 'text-white/80 group-hover/lesson:text-white'}`}>
+                                  {lesson.title}
+                                </span>
+                              </div>
+                              <span className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{lesson.duration}</span>
+                            </Link>
+                          );
+                        })}
                       </div>
 
                       <Button asChild className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300">
                         <Link href={`/courses/${SINGLE_COURSE.id}/lessons/${module.lessons[0].id}`}>
-                          Começar Módulo
+                          Ver Conteúdo
                         </Link>
                       </Button>
                     </div>

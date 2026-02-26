@@ -7,6 +7,8 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, PlayCircle, CheckCircle2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
 const COURSE_DATA = {
   id: '1',
@@ -24,12 +26,39 @@ const COURSE_DATA = {
 
 export default function LessonPage({ params }: { params: Promise<{ id: string, lessonId: string }> }) {
   const resolvedParams = React.use(params);
-  const { lessonId } = resolvedParams;
+  const { lessonId, id: courseId } = resolvedParams;
+  const { user } = useUser();
+  const db = useFirestore();
 
   // Encontrar a aula atual
   const allLessons = COURSE_DATA.modules.flatMap(m => m.lessons);
   const currentLesson = allLessons.find(l => l.id === lessonId) || allLessons[0];
   const currentModule = COURSE_DATA.modules.find(m => m.lessons.some(l => l.id === lessonId)) || COURSE_DATA.modules[0];
+
+  // Verificar se a aula está concluída no Firestore
+  const completionRef = useMemoFirebase(() => {
+    if (!db || !user?.uid || !lessonId) return null;
+    return doc(db, 'users', user.uid, 'lessonCompletions', lessonId);
+  }, [db, user?.uid, lessonId]);
+
+  const { data: completionData, isLoading: isCompletionLoading } = useDoc(completionRef);
+  const isCompleted = !!completionData;
+
+  const handleToggleCompletion = () => {
+    if (!completionRef || !user?.uid) return;
+
+    if (isCompleted) {
+      deleteDocumentNonBlocking(completionRef);
+    } else {
+      setDocumentNonBlocking(completionRef, {
+        id: lessonId,
+        userId: user.uid,
+        lessonId: lessonId,
+        completedAt: new Date().toISOString(),
+        isCompleted: true
+      }, { merge: true });
+    }
+  };
 
   return (
     <SidebarProvider defaultOpen={false}>
@@ -61,9 +90,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
-                    {/* Top Mask to hide YouTube title/share */}
                     <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {/* Corner Mask for Logo */}
                     <div className="absolute bottom-12 right-0 w-24 h-12 bg-black/40 blur-md pointer-events-none" />
                   </>
                 ) : (
@@ -75,15 +102,37 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
               </div>
 
               <div className="space-y-6">
-                <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter font-headline">
-                  {currentLesson.title}
-                </h1>
-                <div className="flex items-center gap-4">
-                  <Badge className="bg-primary/20 text-primary border-primary/30 font-black uppercase text-[10px] px-4 py-1.5">
-                    Aula {allLessons.indexOf(currentLesson) + 1}
-                  </Badge>
-                  <span className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.2em]">{currentLesson.duration} de duração</span>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="space-y-4">
+                    <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter font-headline">
+                      {currentLesson.title}
+                    </h1>
+                    <div className="flex items-center gap-4">
+                      <Badge className="bg-primary/20 text-primary border-primary/30 font-black uppercase text-[10px] px-4 py-1.5">
+                        Aula {allLessons.indexOf(currentLesson) + 1}
+                      </Badge>
+                      <span className="text-[11px] text-muted-foreground font-black uppercase tracking-[0.2em]">{currentLesson.duration} de duração</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    onClick={handleToggleCompletion}
+                    disabled={isCompletionLoading}
+                    className={`
+                      h-14 px-8 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl
+                      ${isCompleted 
+                        ? 'bg-green-500/20 text-green-500 border border-green-500/30 hover:bg-green-500/30' 
+                        : 'bg-primary text-white hover:bg-primary/90 shadow-primary/20'}
+                    `}
+                  >
+                    {isCompleted ? (
+                      <span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4" /> Aula Concluída</span>
+                    ) : (
+                      'Marcar como Concluída'
+                    )}
+                  </Button>
                 </div>
+                
                 <Separator className="bg-white/5" />
                 <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-4xl font-medium">
                   Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.

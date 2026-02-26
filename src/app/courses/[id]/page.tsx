@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -6,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, PlayCircle, CheckCircle2, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 const COURSE_CONTENT = {
   id: '1',
@@ -14,13 +18,24 @@ const COURSE_CONTENT = {
     {
       title: 'Módulo 1: Explicando ferramentas da Clickify',
       lessons: [
-        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45', completed: false },
+        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
       ]
     }
   ]
 };
 
 export default function CoursePage() {
+  const { user } = useUser();
+  const db = useFirestore();
+
+  const completionsRef = useMemoFirebase(() => {
+    if (!db || !user?.uid) return null;
+    return collection(db, 'users', user.uid, 'lessonCompletions');
+  }, [db, user?.uid]);
+
+  const { data: completions } = useCollection(completionsRef);
+  const isLessonCompleted = (id: string) => completions?.some(c => c.lessonId === id);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -50,29 +65,34 @@ export default function CoursePage() {
                     <span className="text-primary">#</span> {module.title}
                   </h2>
                   <div className="grid gap-2">
-                    {module.lessons.map((lesson) => (
-                      <Link 
-                        key={lesson.id} 
-                        href={`/courses/${COURSE_CONTENT.id}/lessons/${lesson.id}`}
-                        className="group flex items-center justify-between p-4 bg-white/5 rounded-xl border border-transparent hover:border-primary/30 hover:bg-white/[0.08] transition-all"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className={`p-2 rounded-lg ${lesson.completed ? 'bg-green-500/10 text-green-500' : 'bg-primary/10 text-primary'}`}>
-                            {lesson.completed ? <CheckCircle2 className="h-5 w-5" /> : <PlayCircle className="h-5 w-5" />}
-                          </div>
-                          <div>
-                            <p className="text-white font-medium group-hover:text-primary transition-colors">{lesson.title}</p>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                              <Clock className="h-3 w-3" />
-                              <span>{lesson.duration}</span>
+                    {module.lessons.map((lesson) => {
+                      const completed = isLessonCompleted(lesson.id);
+                      return (
+                        <Link 
+                          key={lesson.id} 
+                          href={`/courses/${COURSE_CONTENT.id}/lessons/${lesson.id}`}
+                          className="group flex items-center justify-between p-4 bg-white/5 rounded-xl border border-transparent hover:border-primary/30 hover:bg-white/[0.08] transition-all"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className={`p-2 rounded-lg ${completed ? 'bg-green-500/10 text-green-500' : 'bg-primary/10 text-primary'}`}>
+                              {completed ? <CheckCircle2 className="h-5 w-5" /> : <PlayCircle className="h-5 w-5" />}
+                            </div>
+                            <div>
+                              <p className={`font-medium transition-colors ${completed ? 'text-green-500/80' : 'text-white group-hover:text-primary'}`}>
+                                {lesson.title}
+                              </p>
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                                <Clock className="h-3 w-3" />
+                                <span>{lesson.duration}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <Button variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity text-primary">
-                          Assistir Aula
-                        </Button>
-                      </Link>
-                    ))}
+                          <Button variant="ghost" className="opacity-0 group-hover:opacity-100 transition-opacity text-primary">
+                            Assistir Aula
+                          </Button>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
