@@ -1,0 +1,142 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * MindFlow AI Security Rules
+     * 
+     * Core Philosophy:
+     * This ruleset implements a strict user-ownership model for personal data while providing 
+     * shared access to educational content. It leverages path-based authorization to minimize 
+     * latency and cost by avoiding unnecessary 'get()' calls.
+     * 
+     * Data Structure:
+     * - /users/{userId}: Private user profiles and nested progress tracking.
+     * - /courses/{courseId}: Global educational content, modules, and lessons.
+     * 
+     * Key Security Decisions:
+     * 1. Ownership via Path: All user-specific data is nested under /users/{userId}. 
+     *    Authorization is performed by comparing the path wildcard to the authenticated UID.
+     * 2. Public Read for Content: Courses, modules, and lessons are readable by any 
+     *    authenticated user, facilitating a member-only learning environment.
+     * 3. Write Protection: While educational content is publicly readable, writes are 
+     *    restricted. Since the current schema lacks 'authorId' fields for courses, writes 
+     *    are locked down to prevent unauthorized modifications during the prototype phase.
+     * 4. Relational Integrity: On creation of user-scoped documents, the rules enforce 
+     *    that the document's internal 'userId' field matches the path and the authenticated user.
+     * 
+     * Denormalization for Authorization:
+     * To ensure fast rules, the 'userId' is part of the document path for all progress tracking, 
+     * allowing for an O(1) authorization check without database lookups.
+     */
+
+    // --- Helper Functions ---
+
+    /** @description Checks if the request is from an authenticated user. */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** @description Checks if the authenticated user matches the provided ID. */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /** @description Checks if a document exists and the current user is the owner. */
+    function isExistingOwner(userId) {
+      return resource != null && isOwner(userId);
+    }
+
+    /** @description Validates that a field is not being changed during an update. */
+    function isImmutable(fieldName) {
+      return request.resource.data[fieldName] == resource.data[fieldName];
+    }
+
+    // --- Collection Rules ---
+
+    /**
+     * @description Rules for user profile documents. Allows users to manage their own profile.
+     * @path /users/{userId}
+     * @allow (create) User 'abc' creates profile document 'abc'.
+     * @deny (get) User 'abc' tries to read profile document 'xyz'.
+     * @principle Ownership: Path wildcard must match auth.uid.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && isImmutable('id');
+      allow delete: if isExistingOwner(userId);
+
+      /**
+       * @description Tracks course-level progress for a specific user.
+       * @path /users/{userId}/courseProgress/{courseId}
+       * @allow (list) User 'abc' lists their own course progress.
+       * @deny (update) User 'abc' tries to change the 'userId' field in their progress record.
+       * @principle Path-based authorization and relational integrity.
+       */
+      match /courseProgress/{courseId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.userId == userId && request.resource.data.courseId == courseId;
+        allow update: if isExistingOwner(userId) && isImmutable('userId') && isImmutable('courseId');
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Tracks individual lesson completions for a specific user.
+       * @path /users/{userId}/lessonCompletions/{lessonId}
+       * @allow (create) User 'abc' marks lesson 'lesson_1' as complete for themselves.
+       * @deny (delete) User 'abc' tries to delete lesson completion data for user 'xyz'.
+       * @principle Enforces consistency between the path and the internal data.
+       */
+      match /lessonCompletions/{lessonId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.userId == userId && request.resource.data.lessonId == lessonId;
+        allow update: if isExistingOwner(userId) && isImmutable('userId') && isImmutable('lessonId');
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+
+    /**
+     * @description Rules for educational courses. Publicly readable by members.
+     * @path /courses/{courseId}
+     * @allow (get) Any authenticated user reads course details.
+     * @deny (create) Any user tries to create a course (requires admin/owner field).
+     * @principle Public Read with Restricted Writes.
+     */
+    match /courses/{courseId} {
+      allow get, list: if isSignedIn();
+      
+      // CRITICAL: Cannot implement owner-only writes. The 'Course' entity is missing an 'ownerId' or 'authorId' field.
+      allow create, update, delete: if false; // TODO: Add owner/admin validation once the schema is updated.
+
+      /**
+       * @description Rules for course modules. Publicly readable by members.
+       * @path /courses/{courseId}/modules/{moduleId}
+       * @allow (list) Any authenticated user lists modules for a course.
+       * @principle Hierarchical access mirroring the Course collection.
+       */
+      match /modules/{moduleId} {
+        allow get, list: if isSignedIn();
+        
+        // CRITICAL: Cannot implement owner-only writes. Inherits missing ownership context from Course.
+        allow create, update, delete: if false; // TODO: Add owner/admin validation.
+
+        /**
+         * @description Rules for lessons within modules. Publicly readable by members.
+         * @path /courses/{courseId}/modules/{moduleId}/lessons/{lessonId}
+         * @allow (get) Any authenticated user reads lesson content.
+         * @principle Hierarchical access mirroring the Module collection.
+         */
+        match /lessons/{lessonId} {
+          allow get, list: if isSignedIn();
+          
+          // CRITICAL: Cannot implement owner-only writes.
+          allow create, update, delete: if false; // TODO: Add owner/admin validation.
+        }
+      }
+    }
+  }
+}
