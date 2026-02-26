@@ -18,14 +18,6 @@ const COURSE_DATA = {
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', videoId: 'OLNP1xzmpY8', duration: '08:45' },
       ]
-    },
-    {
-      id: 'm2',
-      title: 'Engenharia de Comando',
-      lessons: [
-        { id: 'l2', title: 'Frameworks de Prompting Avançado', videoId: '', duration: '18:30' },
-        { id: 'l3', title: 'Contextualização e Variáveis', videoId: '', duration: '22:15' },
-      ]
     }
   ]
 };

@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -25,25 +24,6 @@ const SINGLE_COURSE = {
       image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45', completed: false },
-      ]
-    },
-    {
-      id: 'm2',
-      title: 'Engenharia de Comando',
-      description: 'Domine as técnicas de comunicação com LLMs para extrair o máximo de performance.',
-      image: PlaceHolderImages.find(img => img.id === 'module-prompting')?.imageUrl || 'https://picsum.photos/seed/m2/800/400',
-      lessons: [
-        { id: 'l2', title: 'Frameworks de Prompting Avançado', duration: '18:30', completed: false },
-        { id: 'l3', title: 'Contextualização e Variáveis', duration: '22:15', completed: false },
-      ]
-    },
-    {
-      id: 'm3',
-      title: 'Implementação e Escala',
-      description: 'Como integrar IA em workflows complexos e escalar resultados reais.',
-      image: PlaceHolderImages.find(img => img.id === 'module-scale')?.imageUrl || 'https://picsum.photos/seed/m3/800/400',
-      lessons: [
-        { id: 'l4', title: 'Automação de Workflows complexos', duration: '25:00', completed: false },
       ]
     }
   ]
@@ -93,7 +73,7 @@ export default function Dashboard() {
                       src={SINGLE_COURSE.image} 
                       alt={SINGLE_COURSE.title} 
                       fill 
-                      className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
+                      className="object-cover opacity-100 group-hover:scale-105 transition-transform duration-1000"
                       priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#121214] via-transparent to-transparent hidden lg:block" />
@@ -123,7 +103,7 @@ export default function Dashboard() {
                       <div className="flex items-center justify-around sm:justify-start gap-4 md:gap-6 px-2">
                         <div className="flex flex-col">
                           <span className="text-[8px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Aulas</span>
-                          <span className="text-white font-bold text-xs md:text-base">24 Aulas</span>
+                          <span className="text-white font-bold text-xs md:text-base">1 Aula</span>
                         </div>
                         <div className="w-px h-6 md:h-8 bg-white/10" />
                         <div className="flex flex-col">
@@ -156,7 +136,6 @@ export default function Dashboard() {
                         className="object-cover opacity-100 group-hover:scale-110 transition-transform duration-700"
                         unoptimized
                        />
-                       <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0E] via-transparent to-transparent opacity-40" />
                        <div className="absolute top-4 left-4 h-10 w-10 md:h-12 md:w-12 rounded-xl bg-primary backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg">
                           <span className="text-base md:text-xl font-black text-white font-headline">0{mIdx + 1}</span>
                        </div>

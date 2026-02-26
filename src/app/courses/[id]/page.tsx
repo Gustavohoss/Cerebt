@@ -9,22 +9,12 @@ import { Separator } from '@/components/ui/separator';
 
 const COURSE_CONTENT = {
   id: '1',
-  title: 'Fundamentos de IA Generativa',
+  title: 'Cerebro: Strategic AI Blueprint',
   modules: [
     {
-      title: 'Módulo 1: Introdução ao Universo da IA',
+      title: 'Módulo 1: Explicando ferramentas da Clickify',
       lessons: [
-        { id: 'l1', title: 'O que é IA Generativa?', duration: '12:45', completed: true },
-        { id: 'l2', title: 'Breve história do Deep Learning', duration: '15:20', completed: true },
-        { id: 'l3', title: 'Arquitetura Transformer explicada', duration: '25:10', completed: false },
-      ]
-    },
-    {
-      title: 'Módulo 2: Modelos de Linguagem (LLMs)',
-      lessons: [
-        { id: 'l4', title: 'GPT, Claude e Gemini: Diferenças fundamentais', duration: '18:30', completed: false },
-        { id: 'l5', title: 'Tokenização e Vetores latentes', duration: '22:15', completed: false },
-        { id: 'l6', title: 'Parâmetros e Fine-tuning', duration: '30:45', completed: false },
+        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45', completed: false },
       ]
     }
   ]
