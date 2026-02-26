@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -20,6 +19,9 @@ export default function RegisterPage() {
   const db = useFirestore();
   const { toast } = useToast();
   const { user, isUserLoading } = useUser();
+  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -33,6 +35,16 @@ export default function RegisterPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!firstName || !lastName) {
+      toast({
+        variant: "destructive",
+        title: "Dados incompletos",
+        description: "Por favor, preencha seu nome e sobrenome.",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
         variant: "destructive",
@@ -47,12 +59,12 @@ export default function RegisterPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const newUser = userCredential.user;
 
-      // Create UserProfile in Firestore
+      // Create UserProfile in Firestore with initial names
       await setDoc(doc(db, 'users', newUser.uid), {
         id: newUser.uid,
         email: email,
-        firstName: '',
-        lastName: '',
+        firstName: firstName,
+        lastName: lastName,
         registrationDate: new Date().toISOString(),
         createdAt: serverTimestamp(),
       });
@@ -90,6 +102,35 @@ export default function RegisterPage() {
           </CardHeader>
           <form onSubmit={handleRegister}>
             <CardContent className="space-y-4 px-6 md:px-8">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-white/80">Nome</Label>
+                  <Input 
+                    id="firstName" 
+                    type="text" 
+                    placeholder="João" 
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11 text-white"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-white/80">Sobrenome</Label>
+                  <Input 
+                    id="lastName" 
+                    type="text" 
+                    placeholder="Silva" 
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    className="bg-black/50 border-white/10 focus:border-primary/50 transition-colors h-11 text-white"
+                  />
+                </div>
+              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white/80">E-mail</Label>
                 <Input 
@@ -132,7 +173,7 @@ export default function RegisterPage() {
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 p-6 md:p-8">
               <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase text-xs tracking-widest h-12 rounded-xl shadow-[0_5px_15px_rgba(147,45,204,0.3)]">
-                {isLoading ? "Criando conta..." : "Criar Conta"}
+                {isLoading ? "Criando conta..." : "Criar Minha Conta"}
               </Button>
               <p className="text-xs md:text-sm text-center text-muted-foreground">
                 Já tem uma conta? <Link href="/login" className="text-primary hover:underline font-bold">Entrar</Link>
