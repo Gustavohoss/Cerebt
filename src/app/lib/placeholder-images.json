@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "course-ai-basics",
+      "description": "Abstract neural network representation",
+      "imageUrl": "https://picsum.photos/seed/ai1/800/450",
+      "imageHint": "neural network"
+    },
+    {
+      "id": "course-llms",
+      "description": "Digital brain with data streams",
+      "imageUrl": "https://picsum.photos/seed/ai2/800/450",
+      "imageHint": "digital intelligence"
+    },
+    {
+      "id": "course-computer-vision",
+      "description": "Robot eye scanning data",
+      "imageUrl": "https://picsum.photos/seed/ai3/800/450",
+      "imageHint": "computer vision"
+    },
+    {
+      "id": "user-avatar",
+      "description": "Professional user profile",
+      "imageUrl": "https://picsum.photos/seed/user1/200/200",
+      "imageHint": "professional portrait"
+    }
+  ]
+}
