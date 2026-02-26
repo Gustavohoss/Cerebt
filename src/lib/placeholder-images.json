@@ -1,27 +1,33 @@
 {
   "placeholderImages": [
     {
-      "id": "course-ai-basics",
-      "description": "Abstract neural network representation",
-      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxuZXVyYWwlMjBuZXR3b3JrfGVufDB8fHx8MTc3MjA0MTM3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "neural network"
+      "id": "course-hero",
+      "description": "Futuristic strategic brain representation",
+      "imageUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "imageHint": "ai strategic"
     },
     {
-      "id": "course-llms",
-      "description": "Digital brain with data streams",
-      "imageUrl": "https://images.unsplash.com/photo-1677442135751-15e514d909f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkaWdpdGFsJTIwaW50ZWxsaWdlbmNlfGVufDB8fHx8MTc3MjA2ODk5MHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "digital intelligence"
+      "id": "module-clickify",
+      "description": "Clickify tools explanation",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504",
+      "imageHint": "clickify tools"
     },
     {
-      "id": "course-computer-vision",
-      "description": "Robot eye scanning data",
-      "imageUrl": "https://images.unsplash.com/photo-1628573413574-2b35620de9d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb21wdXRlciUyMHZpc2lvbnxlbnwwfHx8fDE3NzE5NjE0NDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "computer vision"
+      "id": "module-prompting",
+      "description": "Digital commands and code streams",
+      "imageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4628c9759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+      "imageHint": "digital command"
+    },
+    {
+      "id": "module-scale",
+      "description": "Growth and infrastructure scale",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+      "imageHint": "data network"
     },
     {
       "id": "user-avatar",
       "description": "Professional user profile",
-      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzIwMDcyNzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
       "imageHint": "professional portrait"
     }
   ]

@@ -86,7 +86,6 @@ export default function Dashboard() {
         <main className="flex-1 overflow-x-hidden p-4 md:p-8">
           <div className="max-w-7xl mx-auto space-y-8 md:space-y-12">
             
-            {/* Main Course Hero */}
             <div className="relative group overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-gradient-to-br from-[#121214] to-[#050505] border border-white/5 shadow-2xl">
                <div className="flex flex-col lg:flex-row">
                   <div className="relative h-48 md:h-72 lg:h-auto lg:w-2/5 overflow-hidden">
@@ -96,7 +95,6 @@ export default function Dashboard() {
                       fill 
                       className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                       priority
-                      data-ai-hint="futuristic intelligence"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#121214] via-transparent to-transparent hidden lg:block" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#121214] to-transparent lg:hidden" />
@@ -134,10 +132,8 @@ export default function Dashboard() {
                     </div>
                   </div>
                </div>
-               <div className="absolute -top-40 -right-40 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
             </div>
 
-            {/* Modules Grid */}
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-center justify-between border-l-4 border-primary pl-4 md:pl-6">
                 <div className="space-y-1">
@@ -150,16 +146,15 @@ export default function Dashboard() {
                 {SINGLE_COURSE.modules.map((module, mIdx) => (
                   <div key={mIdx} className="group relative bg-[#0C0C0E] border border-white/5 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden hover:border-primary/40 transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col">
                     
-                    {/* Module Image Header */}
-                    <div className="relative h-40 w-full overflow-hidden">
+                    <div className="relative h-44 w-full overflow-hidden">
                        <Image 
                         src={module.image} 
                         alt={module.title}
                         fill
-                        className="object-cover opacity-40 group-hover:scale-110 transition-transform duration-700"
-                        data-ai-hint="module abstract"
+                        className="object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
+                        unoptimized
                        />
-                       <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0E] via-[#0C0C0E]/20 to-transparent" />
+                       <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0E] via-[#0C0C0E]/40 to-transparent" />
                        <div className="absolute top-4 left-4 h-10 w-10 md:h-12 md:w-12 rounded-xl bg-primary/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
                           <span className="text-base md:text-xl font-black text-white font-headline">0{mIdx + 1}</span>
                        </div>
@@ -184,18 +179,18 @@ export default function Dashboard() {
                           >
                             <div className="flex items-center gap-3">
                               {lesson.completed ? (
-                                <CheckCircle2 className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
+                                <CheckCircle2 className="h-4 w-4 text-green-500" />
                               ) : (
-                                <PlayCircle className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground group-hover/lesson:text-primary transition-colors" />
+                                <PlayCircle className="h-4 w-4 text-muted-foreground group-hover/lesson:text-primary transition-colors" />
                               )}
-                              <span className="text-[10px] md:text-xs font-bold text-white/80 group-hover/lesson:text-white transition-colors line-clamp-1">{lesson.title}</span>
+                              <span className="text-xs font-bold text-white/80 group-hover/lesson:text-white transition-colors line-clamp-1">{lesson.title}</span>
                             </div>
-                            <span className="text-[9px] md:text-[10px] font-medium text-muted-foreground whitespace-nowrap">{lesson.duration}</span>
+                            <span className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{lesson.duration}</span>
                           </Link>
                         ))}
                       </div>
 
-                      <Button className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[9px] md:text-[10px] tracking-widest h-10 md:h-12 rounded-xl transition-all duration-300">
+                      <Button className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300">
                         Começar Módulo
                       </Button>
                     </div>
@@ -206,9 +201,6 @@ export default function Dashboard() {
           </div>
         </main>
       </SidebarInset>
-
-      {/* Global Aesthetics */}
-      <div className="fixed top-0 right-0 -z-10 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-primary/5 blur-[180px] rounded-full pointer-events-none" />
     </SidebarProvider>
   );
 }
