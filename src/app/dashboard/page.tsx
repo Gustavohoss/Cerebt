@@ -5,7 +5,7 @@ import React from 'react';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { PlayCircle, CheckCircle2, Clock, Sparkles, Layout, Trophy, Menu } from 'lucide-react';
+import { PlayCircle, CheckCircle2, Trophy, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -19,13 +19,13 @@ const SINGLE_COURSE = {
   progress: 45,
   modules: [
     {
-      title: 'Fundamentos & Mindset',
-      description: 'Prepare sua mente para a nova era da automação e inteligência estratégica.',
+      title: 'Explicando ferramentas da Clickify',
+      description: 'Conheça a fundo todas as ferramentas da Clickify e como utilizá-las para potencializar seus resultados.',
       image: PlaceHolderImages.find(img => img.id === 'module-mindset')?.imageUrl || 'https://picsum.photos/seed/m1/800/400',
       lessons: [
-        { id: 'l1', title: 'A Nova Era da Inteligência', duration: '12:45', completed: true },
-        { id: 'l2', title: 'Arquitetura do Pensamento Estratégico', duration: '15:20', completed: true },
-        { id: 'l3', title: 'O Ecossistema Cerebro', duration: '10:10', completed: false },
+        { id: 'l1', title: 'Visão Geral do Painel Clickify', duration: '12:45', completed: true },
+        { id: 'l2', title: 'Configurando sua primeira Automação', duration: '15:20', completed: true },
+        { id: 'l3', title: 'Integrações de API e Webhooks', duration: '10:10', completed: false },
       ]
     },
     {
@@ -70,7 +70,7 @@ export default function Dashboard() {
           
           <div className="flex items-center gap-3 md:gap-6">
              <div className="hidden sm:flex flex-col items-end">
-               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Progresso</span>
+               <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Progresso Total</span>
                <div className="flex items-center gap-3 mt-1">
                  <div className="w-24 md:w-32 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
                    <div className="h-full bg-primary" style={{ width: `${SINGLE_COURSE.progress}%` }} />
@@ -85,7 +85,7 @@ export default function Dashboard() {
         </header>
 
         <main className="flex-1 overflow-x-hidden p-4 md:p-8">
-          <div className="max-w-7xl mx-auto space-y-8 md:y-12">
+          <div className="max-w-7xl mx-auto space-y-8 md:space-y-12">
             
             {/* Main Course Hero */}
             <div className="relative group overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-gradient-to-br from-[#121214] to-[#050505] border border-white/5 shadow-2xl">
@@ -96,6 +96,7 @@ export default function Dashboard() {
                       alt={SINGLE_COURSE.title} 
                       fill 
                       className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+                      priority
                       data-ai-hint="futuristic intelligence"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#121214] via-transparent to-transparent hidden lg:block" />
@@ -118,12 +119,12 @@ export default function Dashboard() {
                     
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-4">
                       <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-black uppercase text-[10px] tracking-widest px-6 md:px-10 h-12 md:h-16 rounded-xl md:rounded-2xl shadow-[0_0_30px_rgba(147,45,204,0.3)] transition-all">
-                        Continuar Aula
+                        Continuar Assistindo
                       </Button>
                       <div className="flex items-center justify-around sm:justify-start gap-4 md:gap-6 px-2">
                         <div className="flex flex-col">
-                          <span className="text-[8px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Duração</span>
-                          <span className="text-white font-bold text-xs md:text-base">14h 45m</span>
+                          <span className="text-[8px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Aulas</span>
+                          <span className="text-white font-bold text-xs md:text-base">24 Aulas</span>
                         </div>
                         <div className="w-px h-6 md:h-8 bg-white/10" />
                         <div className="flex flex-col">
@@ -141,8 +142,8 @@ export default function Dashboard() {
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-center justify-between border-l-4 border-primary pl-4 md:pl-6">
                 <div className="space-y-1">
-                  <h3 className="text-lg md:text-2xl font-black text-white uppercase tracking-tighter font-headline">Grade Curricular</h3>
-                  <p className="text-[10px] md:text-sm text-muted-foreground font-medium uppercase tracking-widest">Acesso vitalício aos módulos</p>
+                  <h3 className="text-lg md:text-2xl font-black text-white uppercase tracking-tighter font-headline">Estrutura do Curso</h3>
+                  <p className="text-[10px] md:text-sm text-muted-foreground font-medium uppercase tracking-widest">Clique nos módulos para ver as aulas</p>
                 </div>
               </div>
 
