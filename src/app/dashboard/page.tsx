@@ -15,35 +15,34 @@ const SINGLE_COURSE = {
   title: 'Cerebro: Strategic AI Blueprint',
   description: 'O guia definitivo para dominar a inteligência artificial estratégica e transformar processos de negócio de ponta a ponta.',
   image: PlaceHolderImages.find(img => img.id === 'course-hero')?.imageUrl || 'https://picsum.photos/seed/ai1/1200/600',
-  progress: 45,
+  progress: 5,
   modules: [
     {
+      id: 'm1',
       title: 'Explicando ferramentas da Clickify',
       description: 'Conheça a fundo todas as ferramentas da Clickify e como utilizá-las para potencializar seus resultados.',
-      image: PlaceHolderImages.find(img => img.id === 'module-clickify')?.imageUrl || 'https://picsum.photos/seed/m1/800/400',
+      image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
       lessons: [
-        { id: 'l1', title: 'Visão Geral do Painel Clickify', duration: '12:45', completed: true },
-        { id: 'l2', title: 'Configurando sua primeira Automação', duration: '15:20', completed: true },
-        { id: 'l3', title: 'Integrações de API e Webhooks', duration: '10:10', completed: false },
+        { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45', completed: false },
       ]
     },
     {
+      id: 'm2',
       title: 'Engenharia de Comando',
       description: 'Domine as técnicas de comunicação com LLMs para extrair o máximo de performance.',
       image: PlaceHolderImages.find(img => img.id === 'module-prompting')?.imageUrl || 'https://picsum.photos/seed/m2/800/400',
       lessons: [
-        { id: 'l4', title: 'Frameworks de Prompting Avançado', duration: '18:30', completed: false },
-        { id: 'l5', title: 'Contextualização e Variáveis', duration: '22:15', completed: false },
-        { id: 'l6', title: 'Iteração e Refinamento de Output', duration: '30:45', completed: false },
+        { id: 'l2', title: 'Frameworks de Prompting Avançado', duration: '18:30', completed: false },
+        { id: 'l3', title: 'Contextualização e Variáveis', duration: '22:15', completed: false },
       ]
     },
     {
+      id: 'm3',
       title: 'Implementação e Escala',
       description: 'Como integrar IA em workflows complexos e escalar resultados reais.',
       image: PlaceHolderImages.find(img => img.id === 'module-scale')?.imageUrl || 'https://picsum.photos/seed/m3/800/400',
       lessons: [
-        { id: 'l7', title: 'Automação de Workflows complexos', duration: '25:00', completed: false },
-        { id: 'l8', title: 'IA Generativa no Mundo Real', duration: '20:15', completed: false },
+        { id: 'l4', title: 'Automação de Workflows complexos', duration: '25:00', completed: false },
       ]
     }
   ]
@@ -115,8 +114,10 @@ export default function Dashboard() {
                     </div>
                     
                     <div className="flex flex-col sm:flex-row sm:items-center gap-6 pt-4">
-                      <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-black uppercase text-[10px] tracking-widest px-6 md:px-10 h-12 md:h-16 rounded-xl md:rounded-2xl shadow-[0_0_30px_rgba(147,45,204,0.3)] transition-all">
-                        Continuar Assistindo
+                      <Button asChild size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-black uppercase text-[10px] tracking-widest px-6 md:px-10 h-12 md:h-16 rounded-xl md:rounded-2xl shadow-[0_0_30px_rgba(147,45,204,0.3)] transition-all">
+                        <Link href={`/courses/${SINGLE_COURSE.id}/lessons/${SINGLE_COURSE.modules[0].lessons[0].id}`}>
+                          Continuar Assistindo
+                        </Link>
                       </Button>
                       <div className="flex items-center justify-around sm:justify-start gap-4 md:gap-6 px-2">
                         <div className="flex flex-col">
@@ -171,7 +172,7 @@ export default function Dashboard() {
                       </div>
 
                       <div className="space-y-3 pt-2">
-                        {module.lessons.map((lesson, lIdx) => (
+                        {module.lessons.map((lesson) => (
                           <Link 
                             key={lesson.id} 
                             href={`/courses/${SINGLE_COURSE.id}/lessons/${lesson.id}`}
@@ -190,8 +191,10 @@ export default function Dashboard() {
                         ))}
                       </div>
 
-                      <Button className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300">
-                        Começar Módulo
+                      <Button asChild className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300">
+                        <Link href={`/courses/${SINGLE_COURSE.id}/lessons/${module.lessons[0].id}`}>
+                          Começar Módulo
+                        </Link>
                       </Button>
                     </div>
                   </div>
