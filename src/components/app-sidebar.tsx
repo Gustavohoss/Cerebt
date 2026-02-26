@@ -3,12 +3,14 @@
 import * as React from "react"
 import { 
   LayoutGrid, 
-  Library, 
+  Play, 
   MessageSquare, 
   User, 
   Globe,
   Brain,
-  Zap
+  Zap,
+  BookOpen,
+  Trophy
 } from "lucide-react"
 
 import {
@@ -19,21 +21,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navMain = [
   {
-    title: "Área de Membros",
+    title: "Minha Jornada",
     url: "/dashboard",
     icon: LayoutGrid,
   },
   {
+    title: "Continuar Aula",
+    url: "#",
+    icon: Play,
+  },
+  {
     title: "Biblioteca Hub",
     url: "#",
-    icon: Library,
+    icon: BookOpen,
   },
   {
     title: "Mentoria Direta",
@@ -41,14 +47,14 @@ const navMain = [
     icon: MessageSquare,
   },
   {
-    title: "Meu Perfil",
-    url: "/profile",
-    icon: User,
-  },
-  {
     title: "Comunidade Black",
     url: "#",
     icon: Globe,
+  },
+  {
+    title: "Meu Perfil",
+    url: "/profile",
+    icon: User,
   },
 ]
 
@@ -102,10 +108,10 @@ export function AppSidebar() {
       <SidebarFooter className="p-6">
         <div className="rounded-2xl bg-gradient-to-br from-[#1A1025] to-[#0A0A0B] p-5 border border-white/5 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-2 opacity-10">
-            <Zap className="h-12 w-12 text-primary" />
+            <Trophy className="h-12 w-12 text-primary" />
           </div>
           <div className="relative z-10">
-            <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Acesso Liberado</p>
+            <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1">Status Ativo</p>
             <h4 className="text-sm font-black text-white uppercase tracking-tight">Visitante Elite</h4>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
