@@ -1,9 +1,10 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Zap } from 'lucide-react';
+import { Zap, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,12 +27,13 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [requested, setRequested] = useState(false);
 
   useEffect(() => {
-    if (user && !isUserLoading) {
+    if (user && !isUserLoading && !requested) {
       router.push('/dashboard');
     }
-  }, [user, isUserLoading, router]);
+  }, [user, isUserLoading, router, requested]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,17 +61,22 @@ export default function RegisterPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const newUser = userCredential.user;
 
-      // Create UserProfile in Firestore with initial names
+      // Create UserProfile in Firestore with isApproved: false
       await setDoc(doc(db, 'users', newUser.uid), {
         id: newUser.uid,
         email: email,
         firstName: firstName,
         lastName: lastName,
         registrationDate: new Date().toISOString(),
+        isApproved: false, // Default to pending
         createdAt: serverTimestamp(),
       });
 
-      router.push('/dashboard');
+      setRequested(true);
+      toast({
+        title: "Solicitação Enviada",
+        description: "Seu cadastro foi realizado. Aguarde a aprovação do administrador.",
+      });
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -80,6 +87,34 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   };
+
+  if (requested) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <Card className="w-full max-w-md bg-white/5 border-white/10 glass-panel shadow-2xl p-8 text-center space-y-6">
+          <div className="flex justify-center">
+            <div className="h-20 w-20 rounded-full bg-primary/20 flex items-center justify-center animate-pulse">
+              <Clock className="h-10 w-10 text-primary" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-white uppercase tracking-tighter font-headline">Solicitação em Análise</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Obrigado por se cadastrar no <strong>Cerebro</strong>. Sua conta foi criada com sucesso, mas o acesso aos módulos requer aprovação manual.
+            </p>
+          </div>
+          <div className="p-4 bg-primary/10 rounded-xl border border-primary/20">
+            <p className="text-primary text-xs font-bold uppercase tracking-widest">
+              Avisaremos você assim que liberado!
+            </p>
+          </div>
+          <Button asChild className="w-full bg-white/5 hover:bg-white/10 text-white font-black uppercase text-xs tracking-widest h-12 rounded-xl border border-white/10">
+            <Link href="/login">Voltar ao Login</Link>
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 md:p-6 bg-black relative overflow-hidden">
@@ -95,9 +130,9 @@ export default function RegisterPage() {
 
         <Card className="bg-white/5 border-white/10 glass-panel shadow-2xl">
           <CardHeader className="space-y-1 p-6 md:p-8">
-            <CardTitle className="text-xl md:text-2xl font-bold text-white text-center">Criar sua conta</CardTitle>
+            <CardTitle className="text-xl md:text-2xl font-bold text-white text-center">Solicitar Acesso</CardTitle>
             <CardDescription className="text-muted-foreground text-center text-sm">
-              Preencha os dados abaixo para começar sua jornada
+              Crie sua conta para entrar na lista de espera para aprovação
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleRegister}>
@@ -173,7 +208,7 @@ export default function RegisterPage() {
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 p-6 md:p-8">
               <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-primary/90 text-white font-black uppercase text-xs tracking-widest h-12 rounded-xl shadow-[0_5px_15px_rgba(147,45,204,0.3)]">
-                {isLoading ? "Criando conta..." : "Criar Minha Conta"}
+                {isLoading ? "Enviando solicitação..." : "Solicitar Meu Acesso"}
               </Button>
               <p className="text-xs md:text-sm text-center text-muted-foreground">
                 Já tem uma conta? <Link href="/login" className="text-primary hover:underline font-bold">Entrar</Link>

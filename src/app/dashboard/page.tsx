@@ -1,16 +1,17 @@
+
 'use client';
 
 import React from 'react';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { PlayCircle, CheckCircle2, Trophy, Sparkles } from 'lucide-react';
+import { PlayCircle, CheckCircle2, Trophy, Sparkles, Clock, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { useUser, useFirestore, useCollection, useDoc, useMemoFirebase } from '@/firebase';
+import { collection, doc } from 'firebase/firestore';
 
 const SINGLE_COURSE = {
   id: '1',
@@ -34,8 +35,16 @@ const SINGLE_COURSE = {
 };
 
 export default function Dashboard() {
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const db = useFirestore();
+
+  // Load User Profile to check approval
+  const userRef = useMemoFirebase(() => {
+    if (!db || !user?.uid) return null;
+    return doc(db, 'users', user.uid);
+  }, [db, user?.uid]);
+
+  const { data: profile, isLoading: isProfileLoading } = useDoc(userRef);
 
   const completionsRef = useMemoFirebase(() => {
     if (!db || !user?.uid) return null;
@@ -49,6 +58,47 @@ export default function Dashboard() {
   const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
   const isLessonCompleted = (id: string) => completions?.some(c => c.lessonId === id);
+
+  if (isUserLoading || isProfileLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  // Pending Approval State
+  if (profile && profile.isApproved === false) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-6">
+        <Card className="w-full max-w-lg bg-white/5 border-white/10 glass-panel shadow-2xl overflow-hidden">
+          <div className="h-2 bg-primary animate-pulse" />
+          <div className="p-8 md:p-12 text-center space-y-8">
+            <div className="flex justify-center">
+              <div className="h-24 w-24 rounded-[2rem] bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_40px_rgba(147,45,204,0.15)]">
+                <Lock className="h-10 w-10 text-primary" />
+              </div>
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-black text-white uppercase tracking-tighter font-headline">Acesso em Análise</h2>
+              <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-w-sm mx-auto">
+                Olá, <strong>{profile.firstName}</strong>! Sua solicitação de acesso está sendo processada. Logo você terá acesso total ao Ecossistema Cerebro.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+               <div className="flex items-center justify-center gap-2 text-[10px] font-black text-primary uppercase tracking-[0.3em]">
+                 <Clock className="h-4 w-4" />
+                 Status: Aguardando Liberação
+               </div>
+               <Button asChild variant="ghost" className="text-muted-foreground hover:text-white text-xs font-bold">
+                 <Link href="/login">Sair da Conta</Link>
+               </Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
