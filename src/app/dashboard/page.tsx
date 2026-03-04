@@ -25,6 +25,9 @@ const SINGLE_COURSE = {
       image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
+        { id: 'l2', title: 'Como Abordar Empresas', duration: '15:20' },
+        { id: 'l3', title: 'Criar Site - Parte 1', duration: '22:15' },
+        { id: 'l4', title: 'Criar Site - Parte 2', duration: '18:40' },
       ]
     }
   ]
@@ -120,7 +123,7 @@ export default function Dashboard() {
                       <div className="flex items-center justify-around sm:justify-start gap-4 md:gap-6 px-2">
                         <div className="flex flex-col">
                           <span className="text-[8px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest">Aulas</span>
-                          <span className="text-white font-bold text-xs md:text-base">{totalLessons} Aula</span>
+                          <span className="text-white font-bold text-xs md:text-base">{totalLessons} Aulas</span>
                         </div>
                         <div className="w-px h-6 md:h-8 bg-white/10" />
                         <div className="flex flex-col">

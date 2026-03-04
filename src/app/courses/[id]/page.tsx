@@ -19,6 +19,9 @@ const COURSE_CONTENT = {
       title: 'Ecossistema Clickify: Escala com IA',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
+        { id: 'l2', title: 'Como Abordar Empresas', duration: '15:20' },
+        { id: 'l3', title: 'Criar Site - Parte 1', duration: '22:15' },
+        { id: 'l4', title: 'Criar Site - Parte 2', duration: '18:40' },
       ]
     }
   ]

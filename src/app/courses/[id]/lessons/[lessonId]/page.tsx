@@ -19,6 +19,9 @@ const COURSE_DATA = {
       title: 'Ecossistema Clickify: Escala com IA',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', videoId: 'OLNP1xzmpY8', duration: '08:45' },
+        { id: 'l2', title: 'Como Abordar Empresas', videoId: 'wk8GZU68Slk', duration: '15:20' },
+        { id: 'l3', title: 'Criar Site - Parte 1', videoId: '4ZvpaTsgxIA', duration: '22:15' },
+        { id: 'l4', title: 'Criar Site - Parte 2', videoId: 'adDA4bUajCU', duration: '18:40' },
       ]
     }
   ]
@@ -90,6 +93,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
+                    {/* Overlay para esconder logos do YT */}
                     <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute bottom-12 right-0 w-24 h-12 bg-black/40 blur-md pointer-events-none" />
                   </>
@@ -135,7 +139,10 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                 
                 <Separator className="bg-white/5" />
                 <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-4xl font-medium">
-                  Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico para sites criados com IA.
+                  {currentLesson.id === 'l1' && 'Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.'}
+                  {currentLesson.id === 'l2' && 'Aprenda as melhores estratégias de prospecção e abordagem para vender sites de alto ticket para empresas que buscam resultados reais com IA.'}
+                  {currentLesson.id === 'l3' && 'Mão na massa: Começando a construção do seu primeiro site otimizado com IA, focando em estrutura e velocidade de entrega.'}
+                  {currentLesson.id === 'l4' && 'Finalização do projeto: Design avançado, integrações necessárias e como preparar o site para a entrega final ao cliente.'}
                 </p>
               </div>
             </div>
