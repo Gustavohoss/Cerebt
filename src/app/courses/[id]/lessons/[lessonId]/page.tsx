@@ -20,8 +20,7 @@ const COURSE_DATA = {
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', videoId: 'OLNP1xzmpY8', duration: '08:45' },
         { id: 'l2', title: 'Como Abordar Empresas', videoId: 'wk8GZU68Slk', duration: '15:20' },
-        { id: 'l3', title: 'Criar Site - Parte 1', videoId: '4ZvpaTsgxIA', duration: '22:15' },
-        { id: 'l4', title: 'Criar Site - Parte 2', videoId: 'adDA4bUajCU', duration: '18:40' },
+        { id: 'l3', title: 'Criar Site', videoId: 'ZfBRBOVRv7k', duration: '25:30' },
       ]
     }
   ]
@@ -141,8 +140,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                 <p className="text-muted-foreground text-sm md:text-lg leading-relaxed max-w-4xl font-medium">
                   {currentLesson.id === 'l1' && 'Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.'}
                   {currentLesson.id === 'l2' && 'Aprenda as melhores estratégias de prospecção e abordagem para vender sites de alto ticket para empresas que buscam resultados reais com IA.'}
-                  {currentLesson.id === 'l3' && 'Mão na massa: Começando a construção do seu primeiro site otimizado com IA, focando em estrutura e velocidade de entrega.'}
-                  {currentLesson.id === 'l4' && 'Finalização do projeto: Design avançado, integrações necessárias e como preparar o site para a entrega final ao cliente.'}
+                  {currentLesson.id === 'l3' && 'Mão na massa: Aprenda a construir sites profissionais e otimizados com IA do absoluto zero até a entrega para o cliente final.'}
                 </p>
               </div>
             </div>
