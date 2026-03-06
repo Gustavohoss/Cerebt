@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, PlayCircle, CheckCircle2 } from 'lucide-react';
@@ -28,7 +28,7 @@ const COURSE_DATA = {
       id: 'm2',
       title: 'Banco de Dados',
       lessons: [
-        { id: 'l4', title: 'Introdução ao Banco de Dados', videoId: '', duration: '12:00' }
+        { id: 'l4', title: 'Introdução ao Banco de Dados', videoId: '3QBhErOaDsU', duration: '12:00' }
       ]
     }
   ]
@@ -75,10 +75,13 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
       <AppSidebar />
       <SidebarInset className="bg-black">
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-white/5 px-6 bg-black/50 backdrop-blur-md sticky top-0 z-50">
-          <Link href="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors">
-            <ChevronLeft className="h-4 w-4" />
-            <span className="text-xs font-black uppercase tracking-widest">Voltar ao Hub</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <SidebarTrigger className="text-white hover:bg-white/10" />
+            <Link href="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors">
+              <ChevronLeft className="h-4 w-4" />
+              <span className="text-xs font-black uppercase tracking-widest">Voltar ao Hub</span>
+            </Link>
+          </div>
           <div className="flex items-center gap-4">
              <div className="hidden md:flex flex-col items-end">
                <span className="text-[10px] font-black text-primary uppercase tracking-tighter">{currentModule.title}</span>
@@ -93,16 +96,18 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
             <div className="flex-1 p-4 md:p-12 space-y-8">
               <div className="aspect-video w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl relative group">
                 {currentLesson.videoId ? (
-                  <>
+                  <div className="w-full h-full relative">
                     <iframe
-                      src={`https://www.youtube.com/embed/${currentLesson.videoId}?modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&color=white`}
+                      src={`https://www.youtube.com/embed/${currentLesson.videoId}?modestbranding=1&rel=0&iv_load_policy=3&showinfo=0&color=white&controls=1`}
                       className="w-full h-full pointer-events-auto"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
-                    <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="absolute bottom-12 right-0 w-24 h-12 bg-black/40 blur-md pointer-events-none" />
-                  </>
+                    {/* Visual Masks to hide YouTube UI elements */}
+                    <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute top-0 left-0 w-full h-16 pointer-events-none" /> {/* Covers title area */}
+                    <div className="absolute bottom-12 right-0 w-24 h-12 pointer-events-none" /> {/* Covers logo area */}
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full space-y-4">
                     <PlayCircle className="h-16 w-16 text-primary/40" />
