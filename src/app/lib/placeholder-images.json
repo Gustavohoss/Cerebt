@@ -1,3 +1,4 @@
+
 {
   "placeholderImages": [
     {
@@ -11,6 +12,12 @@
       "description": "Clickify tools explanation",
       "imageUrl": "https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504",
       "imageHint": "clickify tools"
+    },
+    {
+      "id": "module-database",
+      "description": "Database management and AI storage",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/eto68kdtb5zdo7o8o4np887p?v=1772812787803",
+      "imageHint": "data server"
     },
     {
       "id": "module-prompting",

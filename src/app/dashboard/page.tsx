@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -23,11 +24,20 @@ const SINGLE_COURSE = {
       id: 'm1',
       title: 'Ecossistema Clickify: Escala com IA',
       description: 'Aprenda a utilizar o poder da Clickify para criar landing pages que vendem e automatizar a captura de clientes de alto ticket.',
-      image: 'https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/wdwea65n235yiik5t4jn8iqt?v=1772071752504',
+      image: PlaceHolderImages.find(img => img.id === 'module-clickify')?.imageUrl || 'https://picsum.photos/seed/m1/800/400',
       lessons: [
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
         { id: 'l2', title: 'Como Abordar Empresas', duration: '15:20' },
         { id: 'l3', title: 'Criar Site', duration: '25:30' },
+      ]
+    },
+    {
+      id: 'm2',
+      title: 'Banco de Dados',
+      description: 'Estruture o armazenamento de dados da sua agência e dos seus clientes para uma operação profissional e escalável.',
+      image: PlaceHolderImages.find(img => img.id === 'module-database')?.imageUrl || 'https://picsum.photos/seed/m2/800/400',
+      lessons: [
+        { id: 'l4', title: 'Introdução ao Banco de Dados', duration: '12:00' }
       ]
     }
   ]

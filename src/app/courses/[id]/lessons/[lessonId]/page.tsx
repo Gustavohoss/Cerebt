@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -21,6 +22,13 @@ const COURSE_DATA = {
         { id: 'l1', title: 'Ferramenta de capturar Leads', videoId: 'OLNP1xzmpY8', duration: '08:45' },
         { id: 'l2', title: 'Como Abordar Empresas', videoId: 'wk8GZU68Slk', duration: '15:20' },
         { id: 'l3', title: 'Criar Site', videoId: 'ZfBRBOVRv7k', duration: '25:30' },
+      ]
+    },
+    {
+      id: 'm2',
+      title: 'Banco de Dados',
+      lessons: [
+        { id: 'l4', title: 'Introdução ao Banco de Dados', videoId: '', duration: '12:00' }
       ]
     }
   ]
@@ -92,7 +100,6 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
-                    {/* Overlay para esconder logos do YT */}
                     <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute bottom-12 right-0 w-24 h-12 bg-black/40 blur-md pointer-events-none" />
                   </>
@@ -141,11 +148,11 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                   {currentLesson.id === 'l1' && 'Nesta aula, exploramos como utilizar a Ferramenta de Capturar Leads da Clickify para otimizar suas conversões e organizar seu funil de vendas estratégico.'}
                   {currentLesson.id === 'l2' && 'Aprenda as melhores estratégias de prospecção e abordagem para vender sites de alto ticket para empresas que buscam resultados reais com IA.'}
                   {currentLesson.id === 'l3' && 'Mão na massa: Aprenda a construir sites profissionais e otimizados com IA do absoluto zero até a entrega para o cliente final.'}
+                  {currentLesson.id === 'l4' && 'Dê os primeiros passos na estruturação de dados. Entenda por que o banco de dados é o coração de uma operação de IA escalável.'}
                 </p>
               </div>
             </div>
 
-            {/* Sidebar Lessons List */}
             <div className="w-full lg:w-96 border-l border-white/5 bg-[#050505] overflow-auto h-full">
               <div className="p-8 border-b border-white/5">
                 <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-3">

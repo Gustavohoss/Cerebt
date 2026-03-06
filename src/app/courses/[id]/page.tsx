@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -21,6 +22,12 @@ const COURSE_CONTENT = {
         { id: 'l1', title: 'Ferramenta de capturar Leads', duration: '08:45' },
         { id: 'l2', title: 'Como Abordar Empresas', duration: '15:20' },
         { id: 'l3', title: 'Criar Site', duration: '25:30' },
+      ]
+    },
+    {
+      title: 'Banco de Dados',
+      lessons: [
+        { id: 'l4', title: 'Introdução ao Banco de Dados', duration: '12:00' }
       ]
     }
   ]
