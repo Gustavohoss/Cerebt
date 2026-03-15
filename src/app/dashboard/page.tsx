@@ -39,6 +39,15 @@ const SINGLE_COURSE = {
       lessons: [
         { id: 'l4', title: 'Introdução ao Banco de Dados', duration: '12:00' }
       ]
+    },
+    {
+      id: 'm3',
+      title: 'Configurações de Hospedagem',
+      description: 'Publique seus projetos profissionalmente na Vercel e aprenda a remover as limitações de ferramentas externas.',
+      image: PlaceHolderImages.find(img => img.id === 'module-hosting')?.imageUrl || 'https://picsum.photos/seed/m3/800/400',
+      lessons: [
+        { id: 'l5', title: 'Como Hospedar o site na vercel! (remover marca d\'água da Lovable)', duration: '14:20' }
+      ]
     }
   ]
 };
@@ -90,7 +99,7 @@ export default function Dashboard() {
             </div>
             <div className="space-y-3">
               <h2 className="text-3xl font-black text-white uppercase tracking-tighter font-headline">Acesso em Análise</h2>
-              <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-w-sm mx-auto">
+              <p className="text-muted-foreground text-sm md:text-base leading-relaxed max-sm mx-auto">
                 Olá, <strong>{profile.firstName}</strong>! Sua solicitação de acesso está sendo processada. Logo você terá acesso total ao Ecossistema Cerebro.
               </p>
             </div>
@@ -255,7 +264,7 @@ export default function Dashboard() {
                         })}
                       </div>
 
-                      <Button asChild className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300">
+                      <Button asChild className="w-full bg-white/5 hover:bg-primary text-white border border-white/10 hover:border-primary font-black uppercase text-[10px] tracking-widest h-12 rounded-xl transition-all duration-300 mt-auto">
                         <Link href={`/courses/${SINGLE_COURSE.id}/lessons/${module.lessons[0].id}`}>
                           Ver Conteúdo
                         </Link>

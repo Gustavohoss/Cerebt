@@ -29,6 +29,12 @@ const COURSE_CONTENT = {
       lessons: [
         { id: 'l4', title: 'Introdução ao Banco de Dados', duration: '12:00' }
       ]
+    },
+    {
+      title: 'Configurações de Hospedagem',
+      lessons: [
+        { id: 'l5', title: 'Como Hospedar o site na vercel! (remover marca d\'água da Lovable)', duration: '14:20' }
+      ]
     }
   ]
 };

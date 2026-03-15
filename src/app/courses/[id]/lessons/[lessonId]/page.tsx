@@ -30,6 +30,13 @@ const COURSE_DATA = {
       lessons: [
         { id: 'l4', title: 'Introdução ao Banco de Dados', videoId: '3QBhErOaDsU', duration: '12:00' }
       ]
+    },
+    {
+      id: 'm3',
+      title: 'Configurações de Hospedagem',
+      lessons: [
+        { id: 'l5', title: 'Como Hospedar o site na vercel! (remover marca d\'água da Lovable)', videoId: 'mrqN8DGHoFQ', duration: '14:20' }
+      ]
     }
   ]
 };
@@ -154,6 +161,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string, l
                   {currentLesson.id === 'l2' && 'Aprenda as melhores estratégias de prospecção e abordagem para vender sites de alto ticket para empresas que buscam resultados reais com IA.'}
                   {currentLesson.id === 'l3' && 'Mão na massa: Aprenda a construir sites profissionais e otimizados com IA do absoluto zero até a entrega para o cliente final.'}
                   {currentLesson.id === 'l4' && 'Dê os primeiros passos na estruturação de dados. Entenda por que o banco de dados é o coração de uma operação de IA escalável.'}
+                  {currentLesson.id === 'l5' && 'Aprenda o passo a passo definitivo para hospedar seus sites na Vercel e como aplicar técnicas para remover marcas d\'água indesejadas de ferramentas de build como a Lovable.'}
                 </p>
               </div>
             </div>

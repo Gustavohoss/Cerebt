@@ -20,6 +20,12 @@
       "imageHint": "data server"
     },
     {
+      "id": "module-hosting",
+      "description": "Cloud hosting and infrastructure",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+      "imageHint": "cloud server"
+    },
+    {
       "id": "module-prompting",
       "description": "Digital commands and code streams",
       "imageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4628c9759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
