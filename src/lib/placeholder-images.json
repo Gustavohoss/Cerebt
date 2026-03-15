@@ -19,6 +19,12 @@
       "imageHint": "data server"
     },
     {
+      "id": "module-hosting",
+      "description": "Cloud hosting and infrastructure",
+      "imageUrl": "https://s3.typebot.io/public/workspaces/cmle51dfd000olg04rs1yp52y/typebots/cmm2j9e2d000j04i50i8b9y6c/blocks/nsspqhm0bx4oflf9iywr4h8v?v=1773535186725",
+      "imageHint": "cloud server"
+    },
+    {
       "id": "module-prompting",
       "description": "Digital commands and code streams",
       "imageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4628c9759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
